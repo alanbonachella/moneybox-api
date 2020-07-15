@@ -8,6 +8,7 @@ import { UserResponse } from "../../dto";
 import serverBuilder from "../../../../server-builder";
 import { UserRepository } from "../../repository";
 import { User } from "../../model";
+import { AccountRepository } from "../../../../contexts/accounts/repository";
 
 describe("GET /users/:userId", () => {
   const sandbox = sinon.createSandbox();
@@ -16,12 +17,15 @@ describe("GET /users/:userId", () => {
   let _token;
   let _dbStub;
   let _userRepositoryStub;
+  let _accountRepositoryStub;
 
   beforeAll(async () => {
     _userRepositoryStub = sandbox.createStubInstance(UserRepository);
+    _accountRepositoryStub = sandbox.createStubInstance(AccountRepository);
 
     _dbStub = {
       userRepository: _userRepositoryStub,
+      accountRepository: _accountRepositoryStub,
     };
 
     _request = requestSuperTest(await serverBuilder({ db: _dbStub }));
@@ -46,6 +50,8 @@ describe("GET /users/:userId", () => {
 
       // Mocking data
       _userRepositoryStub.findOne.withArgs(data.id).resolves(data);
+
+      //   _userRepositoryStub.findOne.withArgs(data.id).resolves(data);
 
       const res = await _request
         .get(`/users/${data.id}`)

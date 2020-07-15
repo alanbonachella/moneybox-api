@@ -13,7 +13,7 @@ const handler = (
 
   if (!user) throw new ErrorHandler(statusCode.NOT_FOUND, "user not found");
 
-  const account = await (await accountRepository.findByUserId(userId)).shift();
+  const account = (await accountRepository.findByUserId(userId)).shift();
 
   return toResponse(user, account);
 };
