@@ -10,6 +10,13 @@ const usersRules = () => {
   ];
 };
 
+const usersAuthRules = () => {
+  return [
+    body("cpf").isString().matches(regexes.CPF, "i"),
+    body("password").isString().not().isEmpty(),
+  ];
+};
+
 const usersPatchRules = () => {
   return [
     body("name").isString().optional(),
@@ -18,4 +25,4 @@ const usersPatchRules = () => {
   ];
 };
 
-export { usersRules, usersPatchRules };
+export { usersRules, usersPatchRules, usersAuthRules };

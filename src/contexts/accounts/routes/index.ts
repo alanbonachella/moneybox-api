@@ -1,7 +1,7 @@
 import express from "express";
 import passport from "passport";
 import * as accountController from "./controller";
-import { accountDepositRules, accountWithdrawRules } from "./validator";
+import { accountRules } from "./validator";
 import validator from "../../../shared/utils/validator";
 import handleException from "../../../shared/utils/handle-exception";
 import { ServicesCollection } from "../../../shared/services/setup";
@@ -17,7 +17,7 @@ const configureRouter = (services: ServicesCollection) => {
   router.put(
     `/accounts/${accountId}/deposit`,
     passport.authenticate("jwt", { session: false }),
-    accountDepositRules(),
+    accountRules(),
     validator.validate,
     handleException(accountController.deposit(services.db))
   );
@@ -25,7 +25,7 @@ const configureRouter = (services: ServicesCollection) => {
   router.put(
     `/accounts/${accountId}/withdraw`,
     passport.authenticate("jwt", { session: false }),
-    accountWithdrawRules(),
+    accountRules(),
     validator.validate,
     handleException(accountController.withdraw(services.db))
   );

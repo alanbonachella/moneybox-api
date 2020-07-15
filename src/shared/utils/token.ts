@@ -1,5 +1,5 @@
 import jsonwebtoken from "jsonwebtoken";
-import { UserJwtPayload } from "src/contexts/users/dto";
+import { UserJwtPayload } from "../../contexts/users/dto";
 import { TOKEN } from "../env/vars";
 
 const createToken = (userJwtPayload: UserJwtPayload): string => {

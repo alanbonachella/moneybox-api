@@ -1,7 +1,7 @@
 import express from "express";
 import passport from "passport";
 import * as userController from "./controller";
-import { usersRules, usersPatchRules } from "./validator";
+import { usersRules, usersAuthRules, usersPatchRules } from "./validator";
 import validator from "../../../shared/utils/validator";
 import handleException from "../../../shared/utils/handle-exception";
 import { ServicesCollection } from "../../../shared/services/setup";
@@ -16,10 +16,16 @@ const configureRouter = (services: ServicesCollection) => {
 
   router.post(
     "/users",
-    passport.authenticate("jwt", { session: false }),
     usersRules(),
     validator.validate,
     handleException(userController.create(services.db))
+  );
+
+  router.post(
+    "/users/auth",
+    usersAuthRules(),
+    validator.validate,
+    handleException(userController.userAuth(services.db))
   );
 
   router.get(
@@ -31,9 +37,6 @@ const configureRouter = (services: ServicesCollection) => {
   router.get(
     "/users",
     passport.authenticate("jwt", { session: false }),
-    // validator.checkQueryStr(["enabled"]),
-    // queryStringRules(),
-    validator.validate,
     handleException(userController.findAll(services.db))
   );
 

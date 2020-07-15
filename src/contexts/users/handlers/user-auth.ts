@@ -9,19 +9,19 @@ import { UserRepository } from "../repository";
 const handler = (userRepository: UserRepository) => async (
   req: UserAuthRequest
 ): Promise<UserAuthResponse> => {
-  const user = await userRepository.findOne({
+  const userFound = await userRepository.find({
     cpf: req.cpf.trim(),
     password: await generatePassword(req.password),
     enabled: true,
   });
 
-  if (!user)
+  if (!userFound.length)
     throw new ErrorHandler(statusCode.UNAUTHORIZED, "invalid credentials");
 
   const result = {
     accessToken: createToken({
-      id: user.id,
-      name: user.name,
+      id: userFound[0].id,
+      name: userFound[0].name,
       enabled: true,
     }),
   };

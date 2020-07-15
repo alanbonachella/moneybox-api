@@ -1,7 +1,7 @@
 import express from "express";
 import * as userHandlers from "../handlers";
 import { statusCode } from "../../../shared/utils/status-code";
-import { UserRequest } from "../dto";
+import { UserRequest, UserAuthRequest } from "../dto";
 import { Connection } from "../../../shared/db";
 
 const create = (db: Connection) => async (
@@ -10,7 +10,10 @@ const create = (db: Connection) => async (
 ) => {
   const user = req.body as UserRequest;
 
-  const result = await userHandlers.create(db.userRepository)(user);
+  const result = await userHandlers.create(
+    db.userRepository,
+    db.accountRepository
+  )(user);
 
   return res.status(statusCode.CREATED).json(result);
 };
@@ -21,7 +24,10 @@ const findById = (db: Connection) => async (
 ) => {
   const userId = req.params.userId as string;
 
-  const result = await userHandlers.getById(db.userRepository)(userId);
+  const result = await userHandlers.getById(
+    db.userRepository,
+    db.accountRepository
+  )(userId);
 
   return res.status(statusCode.OK).json(result);
 };
@@ -59,4 +65,17 @@ const update = (db: Connection) => async (
   return res.status(statusCode.OK).json(result);
 };
 
-export { create, findById, findAll, deleteById, update };
+const userAuth = (db: Connection) => async (
+  req: express.Request,
+  res: express.Response
+) => {
+  const userId = req.params.userId as string;
+
+  const userAuth = req.body as UserAuthRequest;
+
+  const result = await userHandlers.userAuth(db.userRepository)(userAuth);
+
+  return res.status(statusCode.OK).json(result);
+};
+
+export { create, findById, findAll, deleteById, update, userAuth };

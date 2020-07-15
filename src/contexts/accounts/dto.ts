@@ -1,23 +1,17 @@
+import { Account } from "./model";
+
 export type AccountRequest = {
-  name: string;
-
-  cpf: string;
-
-  password: string;
-
-  enabled: boolean;
+  id: string;
+  value: number;
 };
 
 export type AccountResponse = {
-  id: string;
+  cells: Cell[];
+  account: Account;
+};
 
-  name: string;
+export type Cell = {
+  quantity: number;
 
-  cpf: string;
-
-  enabled: boolean;
-
-  createdAt: Date;
-
-  updatedAt: Date;
+  value: number;
 };

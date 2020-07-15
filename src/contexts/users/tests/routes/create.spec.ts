@@ -9,6 +9,8 @@ import serverBuilder from "../../../../server-builder";
 import * as regexes from "../../../../shared/utils/regexes";
 import { UserRepository } from "../../repository";
 import { User } from "../../model";
+import { AccountRepository } from "../../../../contexts/accounts/repository";
+import { Account } from "../../../../contexts/accounts/model";
 
 describe("POST /users", () => {
   const sandbox = sinon.createSandbox();
@@ -17,12 +19,15 @@ describe("POST /users", () => {
   let _token;
   let _dbStub;
   let _userRepositoryStub;
+  let _accountRepositoryStub;
 
   beforeAll(async () => {
     _userRepositoryStub = sandbox.createStubInstance(UserRepository);
+    _accountRepositoryStub = sandbox.createStubInstance(AccountRepository);
 
     _dbStub = {
       userRepository: _userRepositoryStub,
+      accountRepository: _accountRepositoryStub,
     };
 
     _request = requestSuperTest(await serverBuilder({ db: _dbStub }));
@@ -47,7 +52,12 @@ describe("POST /users", () => {
       const data: UserRequest = usersRequestFixture();
 
       // Mocking data
-      _userRepositoryStub.findOne.withArgs({ cpf: data.cpf }).resolves(null);
+      _userRepositoryStub.find.withArgs({ cpf: data.cpf }).resolves([]);
+
+      _accountRepositoryStub.save
+        .withArgs(sinon.match.instanceOf(Account))
+        .callsFake((account) => Promise.resolve(account));
+
       _userRepositoryStub.save
         .withArgs(sinon.match.instanceOf(User))
         .callsFake((user) => Promise.resolve(user));
@@ -150,9 +160,9 @@ describe("POST /users", () => {
       // Mocking data
       _userRepositoryStub.save.resolves(usersFixture(data) as User);
 
-      _userRepositoryStub.findOne
+      _userRepositoryStub.find
         .withArgs({ cpf: data.cpf })
-        .resolves({ cpf: data.cpf } as User);
+        .resolves([{ cpf: data.cpf } as User]);
 
       const res = await _request
         .post("/users")

@@ -11,12 +11,14 @@ const deposit = (db: Connection) => async (
 ) => {
   const user = req.user as User;
 
-  const accountRequest = req.user as AccountRequest;
+  const accountId = req.params.accountId as string;
+
+  const accountRequest = req.body as AccountRequest;
 
   const result = await accountHandlers.deposit(
     db.accountRepository,
     db.userRepository
-  )(user, accountRequest);
+  )(user, accountId, accountRequest);
 
   return res.status(statusCode.OK).json(result);
 };
@@ -27,12 +29,14 @@ const withdraw = (db: Connection) => async (
 ) => {
   const user = req.user as User;
 
-  const accountRequest = req.user as AccountRequest;
+  const accountId = req.params.accountId as string;
+
+  const accountRequest = req.body as AccountRequest;
 
   const result = await accountHandlers.withdraw(
     db.accountRepository,
     db.userRepository
-  )(user, accountRequest);
+  )(user, accountId, accountRequest);
 
   return res.status(statusCode.OK).json(result);
 };

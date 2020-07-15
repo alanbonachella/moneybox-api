@@ -1,16 +1,14 @@
 import { UserResponse, UserAuthResponse } from "./dto";
 import { User } from "./model";
+import * as accountMapper from "../accounts/mapper";
+import { Account } from "../accounts/model";
 import _ from "lodash";
 
-const toResponse = (item: User): UserResponse => {
-  return _.pick(item, [
-    "id",
-    "name",
-    "cpf",
-    "enabled",
-    "createdAt",
-    "updatedAt",
-  ]);
+const toResponse = (user: User, account?: Account): UserResponse => {
+  return {
+    ..._.pick(user, ["id", "name", "cpf", "enabled", "createdAt", "updatedAt"]),
+    account: accountMapper.toResponse(account) || undefined,
+  };
 };
 
 const toUserAuthResponse = (item: Object): UserAuthResponse => {
