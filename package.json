@@ -1,0 +1,44 @@
+{
+  "name": "challenges",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.ts",
+  "scripts": {
+    "build": "tsc",
+    "build:dev": "tsc --watch true",
+    "start": "node --inspect -r ts-node/register -r tsconfig-paths/register -r source-map-support/register build",
+    "test": "jest --verbose --coverage --runInBand",
+    "test:clearCache": "jest --clearCache",
+    "test:watch": "jest --coverage --watch",
+    "test:watchAll": "jest --coverage --watchAll"
+  },
+  "engines": {
+    "node": "12"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "connect-timeout": "1.9.0",
+    "express": "4.17.1",
+    "express-validator": "6.6.0",
+    "helmet": "3.23.3",
+    "lodash": "4.17.19",
+    "md5-typescript": "1.0.5",
+    "passport": "0.4.1",
+    "passport-jwt": "4.0.0",
+    "reflect-metadata": "0.1.13",
+    "uuid": "8.2.0"
+  },
+  "devDependencies": {
+    "@types/jest": "26.0.4",
+    "faker": "4.1.0",
+    "jest": "25.5.1",
+    "jest-sinon": "1.0.4",
+    "sinon": "9.0.2",
+    "supertest": "4.0.2",
+    "ts-jest": "25.4.0",
+    "ts-node": "8.10.2",
+    "tsconfig-paths": "3.9.0",
+    "typescript": "3.9.6"
+  }
+}

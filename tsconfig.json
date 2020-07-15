@@ -1,0 +1,19 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "es2019",
+        "watch": false,
+        "moduleResolution": "node",
+        "baseUrl": ".",
+        "outDir": "./build",
+        "esModuleInterop": true,
+        "resolveJsonModule": true,
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "sourceMap": true,
+        "types": ["node", "jest", "reflect-metadata"],
+        "lib": ["es2019"]
+    },
+    "include": ["src/**/*", "test/**/*"],
+    "exclude": [".idea", "build", "node_modules"]
+}
